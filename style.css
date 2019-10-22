@@ -1,0 +1,92 @@
+body{
+    position: absolute;
+}
+h2{
+    position: relative;
+    margin: auto;
+}
+
+.field {
+    width: 600px;
+    height: 600px;
+    position: relative;
+    margin: auto;
+    border: 1px solid #a22;
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.cell {
+    width: 75px;
+    height: 75px;
+}
+
+.dark {
+    background-color: #711
+}
+
+.light {
+    background-color: #ff9;
+}
+
+.check{
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    position: relative;
+	top: 7.5px;
+	bottom: 7.5px;
+	left: 7.5px;
+	right: 7.5px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.innerCircle{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    position: relative;
+	top: 10px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+    margin: 0;
+    cursor: pointer;
+    box-shadow: inset 1px 1px 2px 1px;
+}
+
+.lightCheck{
+    background:linear-gradient(45deg, #dd6, #ee8);
+    box-shadow: 1px 1px 3px 2px;
+    background-clip: border-box;
+}
+
+.darkCheck{
+    background:linear-gradient(45deg, #333, #555);
+    box-shadow: 1px 1px 3px 2px;
+}
+
+.selected {
+    /* border: 1px solid aqua; */
+    box-shadow: 1px 1px 2px 2px aqua;
+    transition-property: box-shadow;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+    animation: selectedCheck 0.9s infinite cubic-bezier(0.445, 0.05, 0.55, 0.95) alternate;
+}
+
+@keyframes selectedCheck {
+    from {box-shadow: 1px 1px 4px 4px aqua;}
+    to {box-shadow: 0.5px 0.5px 1px 1px aqua;}
+}
+
+/* @keyframes blinkingcell{
+    from {background-color: #711;}
+    to{background: linear-gradient(135deg, #f73, #fa4, #fb7);
+        }
+} */
+.acceptable{
+    animation: blinkingcell 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95)  infinite alternate;
+}
