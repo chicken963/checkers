@@ -89,11 +89,26 @@ class Field{
     }
     
     reActivate(checkerSet){
+        let anybodyCanEat = false;
         checkerSet.forEach((check)=>{
-            if(check.canMove() || check.whereCanEatFrom(check.parentCell).length > 0){
-                check.makeActivatable();
+            if(check.canEat()){
+                anybodyCanEat = true;
             }       
         })
+        if(anybodyCanEat){
+            checkerSet.forEach((check)=>{
+                if(check.canEat()){
+                    check.makeActivatable();
+                    // check.checkForMultipleEating();
+                }    
+            })
+        } else {
+            checkerSet.forEach((check)=>{
+                if(check.canMove()){
+                    check.makeActivatable(); 
+                }
+            })
+        }
     }
 }
 
@@ -269,6 +284,14 @@ class Check{
         return this.checkBody.classList.contains("lightCheck")
     }
 
+    canEat(){
+        return this.whereCanEatFrom(this.parentCell).length > 0;
+    }
+
+    canEatFrom(cell){
+        return this.whereCanEatFrom(cell).length > 0;
+    }
+
     canMove(){
         let hasCellAvailable = false;
         let parentCellNeighbourIndexes = this.parentCell.findNeighboursToMove();
@@ -294,20 +317,28 @@ class Check{
         return cellsToGetThroughEat;
     }
 
-
-    
-
     prepareForAction(){
         field.blurPreviouslySelectedChecker();
         this.master.toggleClass("selected");
         field.resetAcceptableCells();
-        if(this.master.whereCanEatFrom(this.master.parentCell).length > 0){
+        if(this.master.canEat()){
             letAvailableCellsAcceptEating(this.master);   
         } else {
             letAvailableCellsAcceptMoving(this.master);
         }
         
     }
+
+    // checkForMultipleEating(){
+    //     let availableFarNeighbourCells = this.whereCanEatFrom(this.parentCell);
+    //     availableFarNeighbourCells.forEach((farNeighbourCell)=>{
+    //         if(this.canEatFrom(farNeighbourCell)){
+    //             let secondInstanceAvailableCells = this.whereCanEatFrom(farNeighbourCell);
+    //             console.log(secondInstanceAvailableCells);
+    //         }
+            
+    //     })
+    // }
 }
 
 function letAvailableCellsAcceptMoving(check){
@@ -342,28 +373,6 @@ function letAvailableCellsAcceptEating(check){
             })
         })
     }
-// function letAvailableCellsAcceptEating(check){
-//     let basicCell = check.parentCell;
-//     let checkParentCellNeighbourIndexes = check.parentCell.findNeighboursToEat();
-//     let basicIndex = check.parentCell.getIndex();
-//     checkParentCellNeighbourIndexes.forEach((index)=>{
-//         neighbourCell = field.cellByIndex(index);
-//         let farNeighbourCell = basicCell.getCellLocatedBehind(neighbourCell);
-//         if (basicCell.isFilledWithEnemyCheckerInComparisonTo(neighbourCell) && farNeighbourCell.isEmpty()){
-//             farNeighbourCell.addClass("acceptable");
-//             farNeighbourCell.cellBody.addEventListener("click", ()=>{ 
-//                 field.resetAcceptableCells();
-//                 basicCell = field.cellByIndex(basicIndex);
-//                 neighbourCell = field.cellByIndex(index);
-//                 farNeighbourCell = basicCell.getCellLocatedBehind(neighbourCell);
-//                 farNeighbourCell.insertCheck(check); 
-//                 neighbourCell = field.cellByIndex(index);
-//                 neighbourCell.clear();
-//                 field.reActivateCheckers();
-//             })
-//         }
-//     })
-// }
 
 field = new Field();
 field.fillWithCells();
