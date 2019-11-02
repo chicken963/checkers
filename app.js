@@ -201,6 +201,26 @@ class Cell {
         return neighboursIndexesSum;
     }
 
+    pickDirectionRelatively(anotherCell){
+        let direction;
+        let indexDelta = this.getIndex()-anotherCell.getIndex();
+        switch(indexDelta){
+            case 7:
+                direction = 'sw';
+                break;
+            case 9:
+                direction = 'se';
+                break;
+            case -7:
+                direction = 'ne';
+                break;
+            case -9:
+                direction = 'nw';
+                break;
+        }
+        return direction;
+    }
+
     findNeighboursToEat(){
         let neighboursIndexesSum = new Array();
         neighboursIndexesSum.push(this.findNeighbour("sw"), this.findNeighbour("se"), this.findNeighbour("nw"), this.findNeighbour("ne"));
@@ -329,9 +349,23 @@ class Check{
         
     }
 
+    moveSlightlyTo(cell){
+        this.toggleClass("moving");
+        let direction = cell.pickDirectionRelatively(this.parentCell);
+        this.checkBody.style.animationName = direction;
+        setTimeout(()=>{
+            this.checkBody.style.animationName = '';
+            this.toggleClass("moving");
+            cell.insertCheck(this);               
+            field.reActivateCheckers()
+        }, 500);
+    }
+
     // checkForMultipleEating(){
     //     let availableFarNeighbourCells = this.whereCanEatFrom(this.parentCell);
     //     availableFarNeighbourCells.forEach((farNeighbourCell)=>{
+    //         console.log(this.canEatFrom(farNeighbourCell));
+    //         console.log(farNeighbourCell);
     //         if(this.canEatFrom(farNeighbourCell)){
     //             let secondInstanceAvailableCells = this.whereCanEatFrom(farNeighbourCell);
     //             console.log(secondInstanceAvailableCells);
@@ -350,8 +384,7 @@ function letAvailableCellsAcceptMoving(check){
             cell.cellBody.addEventListener("click", ()=>{ 
                 field.resetAcceptableCells();
                 cell = field.cellByIndex(index);
-                cell.insertCheck(check);               
-                field.reActivateCheckers();
+                check.moveSlightlyTo(cell);                
             })
         }
     })
@@ -366,10 +399,17 @@ function letAvailableCellsAcceptEating(check){
         farNeighbourCell.cellBody.addEventListener("click", ()=>{ 
             field.resetAcceptableCells();
             farNeighbourCell = field.cellByIndex(farIndex);
-            farNeighbourCell.insertCheck(check); 
-            neighbourCell = field.cellByIndex(0.5 * (basicIndex + farIndex));
-            neighbourCell.clear();
-            field.reActivateCheckers();
+            check.toggleClass("moving");
+            setTimeout(()=>{
+                farNeighbourCell.insertCheck(check); 
+                neighbourCell = field.cellByIndex(0.5 * (basicIndex + farIndex));
+                neighbourCell.clear();
+                field.reActivateCheckers()
+            }, 500);
+            // farNeighbourCell.insertCheck(check); 
+            // neighbourCell = field.cellByIndex(0.5 * (basicIndex + farIndex));
+            // neighbourCell.clear();
+            // field.reActivateCheckers();
             })
         })
     }

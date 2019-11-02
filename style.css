@@ -90,3 +90,71 @@ h2{
 .acceptable{
     animation: blinkingcell 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95)  infinite alternate;
 }
+
+@keyframes ne {
+    from {
+        top: 7.5px; 
+        left: 7.5px; 
+        right: 7.5px; 
+        bottom: 7.5px;
+    }
+    to {
+        top: -52.5px; 
+        left: 67.5px; 
+        right: -52.5px; 
+        bottom: 67.5px;
+    }
+}
+
+@keyframes nw {
+    from {
+        top: 7.5px; 
+        left: 7.5px; 
+        right: 7.5px; 
+        bottom: 7.5px;
+    }
+    to {
+        top: -52.5px; 
+        left: -52.5px; 
+        right: 67.5px; 
+        bottom: 67.5px;
+    }
+}
+
+@keyframes sw {
+    from {
+        top: 7.5px; 
+        left: 7.5px; 
+        right: 7.5px; 
+        bottom: 7.5px;
+    }
+    to {
+        top: 67.5px; 
+        left: -52.5px; 
+        right: 67.5px; 
+        bottom: -52.5px;
+    }
+}
+
+@keyframes se {
+    from {
+        top: 7.5px; 
+        left: 7.5px; 
+        right: 7.5px; 
+        bottom: 7.5px;
+    }
+    to {
+        top: 67.5px; 
+        left: 67.5px; 
+        right: -52.5px; 
+        bottom: -52.5px;
+    }
+}
+
+.moving {
+    /* transition: top 0.5s, left 0.5s, right 0.5s, bottom 0.5s; */
+    /* animation-name: ne; */
+    animation-duration: 0.5s;
+    animation-direction: normal;
+    animation-iteration-count: 1;
+}
